@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Labs Asset Library</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                    },
+                    colors: {
+                        black: '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Quicksand', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #27272a; }
+
+        /* Checkerboard background pattern to visually detect "No Background" (Transparency) */
+        .checkerboard {
+            background-color: #f4f4f5;
+            background-image: linear-gradient(45deg, #e4e4e7 25%, transparent 25%), 
+                              linear-gradient(-45deg, #e4e4e7 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #e4e4e7 75%), 
+                              linear-gradient(-45deg, transparent 75%, #e4e4e7 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+        }
+        .dark .checkerboard {
+            background-color: #09090b;
+            background-image: linear-gradient(45deg, #18181b 25%, transparent 25%), 
+                              linear-gradient(-45deg, #18181b 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #18181b 75%), 
+                              linear-gradient(-45deg, transparent 75%, #18181b 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+        }
+    </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-100 min-h-screen transition-colors duration-300">
+
+    <header class="p-6 md:p-10 max-w-[1600px] mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Color Labs Asset Library</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-xl mt-2 font-medium">Browse, preview, and audit space assets</p>
+            </div>
+            
+            <div class="relative w-full md:w-96">
+                <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-2xl">search</span>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search assets..." 
+                    class="w-full pl-14 pr-6 py-4 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 rounded-3xl text-xl focus:outline-none focus:border-blue-500 transition-all shadow-sm"
+                >
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-6 pb-20 flex flex-col md:flex-row gap-8">
+        
+        <section class="w-full md:w-3/5">
+            <div id="loadingState" class="flex flex-col items-center py-20 text-zinc-400 gap-4">
+                <span class="material-symbols-rounded animate-spin text-5xl">sync</span>
+                <p class="text-xl font-medium">Loading library items...</p>
+            </div>
+
+            <div id="assetGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                </div>
+        </section>
+
+        <section class="w-full md:w-2/5">
+            <div class="sticky top-8">
+                <div id="emptyPreview" class="bg-white dark:bg-zinc-900 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] p-20 flex flex-col items-center justify-center text-zinc-400">
+                    <span class="material-symbols-rounded text-6xl mb-4">filter_hdr</span>
+                    <p class="text-xl font-semibold">Select an asset to view</p>
+                </div>
+
+                <div id="previewPanel" class="hidden bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] p-8 shadow-xl">
+                    
+                    <div class="w-full aspect-square checkerboard rounded-3xl mb-6 flex items-center justify-center overflow-hidden border-2 border-zinc-200 dark:border-zinc-800 relative">
+                        <img id="previewImage" src="" alt="" class="max-w-full max-h-full object-contain transition-all duration-200 hidden">
+                        <div id="previewFallback" class="flex flex-col items-center text-zinc-400 dark:text-zinc-500">
+                            <span class="material-symbols-rounded text-8xl" id="fallbackIcon">description</span>
+                            <span class="text-2xl font-bold uppercase tracking-wider" id="fallbackExt">FILE</span>
+                        </div>
+                    </div>
+
+                    <div id="invertControlBox" class="mb-6 p-4 bg-zinc-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 hidden">
+                        <label class="flex items-center justify-between cursor-pointer select-none">
+                            <span class="text-lg font-bold flex items-center gap-2">
+                                <span class="material-symbols-rounded text-zinc-500">invert_colors</span>
+                                Inverted Look
+                            </span>
+                            <input type="checkbox" id="invertToggle" class="sr-only peer">
+                            <div class="w-12 h-7 bg-zinc-300 dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-zinc-600 peer-checked:bg-blue-600 relative"></div>
+                        </label>
+                        <div id="invertNotice" class="mt-3 text-sm font-semibold text-amber-600 dark:text-amber-400 hidden cursor-pointer flex items-start gap-1.5 transition-opacity" onclick="disableInversion()">
+                            <span class="material-symbols-rounded text-base mt-0.5 shrink-0">info</span>
+                            <span>The links will show the original version of the images. Click to disable invertion.</span>
+                        </div>
+                    </div>
+
+                    <button id="downloadBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-3xl text-2xl font-bold flex items-center justify-center gap-3 transition-transform active:scale-[0.98] mb-6 shadow-md shadow-blue-500/10">
+                        <span class="material-symbols-rounded text-3xl">download</span>
+                        Download File
+                    </button>
+
+                    <div class="space-y-5 mb-6">
+                        <div>
+                            <label class="text-zinc-400 dark:text-zinc-500 text-xs font-bold uppercase tracking-widest block mb-1">File Name</label>
+                            <p id="metaName" class="text-2xl font-bold break-all"></p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-zinc-400 dark:text-zinc-500 text-xs font-bold uppercase tracking-widest block mb-1">Type</label>
+                                <p id="metaType" class="text-xl font-bold text-blue-500 uppercase font-mono"></p>
+                            </div>
+                            <div>
+                                <label class="text-zinc-400 dark:text-zinc-500 text-xs font-bold uppercase tracking-widest block mb-1">Last Modification</label>
+                                <p id="metaUpdated" class="text-xl font-bold text-zinc-600 dark:text-zinc-400">...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <button onclick="copyData('id')" class="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group">
+                            <span class="text-lg font-semibold flex items-center gap-3"><span class="material-symbols-rounded text-zinc-400 dark:text-zinc-500">fingerprint</span>Asset ID</span>
+                            <span id="btnIdText" class="text-blue-500 dark:text-blue-400 font-bold">Copy</span>
+                        </button>
+                        <button onclick="copyData('link')" class="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group">
+                            <span class="text-lg font-semibold flex items-center gap-3"><span class="material-symbols-rounded text-zinc-400 dark:text-zinc-500">link</span>Public Link</span>
+                            <span id="btnLinkText" class="text-blue-500 dark:text-blue-400 font-bold">Copy</span>
+                        </button>
+                        <button onclick="copyData('raw')" class="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors group">
+                            <span class="text-lg font-semibold flex items-center gap-3"><span class="material-symbols-rounded text-zinc-400 dark:text-zinc-500">code</span>Raw URL</span>
+                            <span id="btnRawText" class="text-blue-500 dark:text-blue-400 font-bold">Copy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const REPO_OWNER = 'mahi902';
+        const REPO_NAME = 'ColorLabs';
+        const ASSET_PATH = 'asset';
+        
+        let allAssets = [];
+        let selectedAsset = null;
+        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'ico', 'bmp'];
+
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        function initApp() {
+            fetchAssets();
+            document.getElementById('searchInput').addEventListener('input', filterAssets);
+            document.getElementById('invertToggle').addEventListener('change', handleInversionChange);
+        }
+
+        async function fetchAssets() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ASSET_PATH}`);
+                if (!res.ok) throw new Error('Network error mapping repo files');
+                const data = await res.json();
+                
+                allAssets = data.map(file => {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    return {
+                        name: file.name,
+                        ext: ext,
+                        assetId: file.name.substring(0, file.name.lastIndexOf('.')) || file.name,
+                        rawUrl: file.download_url,
+                        pageLink: `https://${REPO_OWNER}.github.io/${REPO_NAME}/${ASSET_PATH}/${file.name}`,
+                        path: file.path,
+                        isImage: imageExtensions.includes(ext)
+                    };
+                });
+
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('assetGrid').classList.remove('hidden');
+                renderGrid(allAssets);
+            } catch (e) {
+                console.error(e);
+                document.getElementById('loadingState').innerText = "Could not synchronize file tree listing.";
+            }
+        }
+
+        function renderGrid(assets) {
+            const grid = document.getElementById('assetGrid');
+            grid.innerHTML = '';
+            
+            if(assets.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-xl font-semibold text-zinc-400">No assets match criteria</div>`;
+                return;
+            }
+
+            assets.forEach(asset => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-zinc-900 p-4 rounded-[2rem] border-2 border-zinc-100 dark:border-zinc-800 cursor-pointer hover:scale-[1.01] transition-all group select-none shadow-sm hover:shadow-md flex flex-col justify-between relative overflow-hidden";
+                card.onclick = () => selectAsset(asset, card);
+                
+                // Content View Windows use checkerboard to let user easily check transparency / No Background architecture
+                let viewWindow = '';
+                if (asset.isImage) {
+                    viewWindow = `
+                        <div class="w-full aspect-square checkerboard rounded-2xl flex items-center justify-center p-3 mb-4 border border-zinc-100 dark:border-zinc-800 relative">
+                            <img src="${asset.rawUrl}" class="max-w-full max-h-full object-contain" loading="lazy">
+                            <span class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-[10px] text-white px-2 py-0.5 rounded-full font-bold tracking-wide uppercase">No BG View</span>
+                        </div>`;
+                } else {
+                    viewWindow = `
+                        <div class="w-full aspect-square bg-zinc-100 dark:bg-black rounded-2xl flex flex-col items-center justify-center text-zinc-400 dark:text-zinc-600 mb-4">
+                            <span class="material-symbols-rounded text-5xl">description</span>
+                            <span class="text-base font-bold mt-1 uppercase font-mono tracking-wider">${asset.ext}</span>
+                        </div>`;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        ${viewWindow}
+                        <h3 class="text-lg font-bold text-center truncate px-1">${asset.name}</h3>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterAssets(e) {
+            const q = e.target.value.toLowerCase().trim();
+            renderGrid(allAssets.filter(a => a.name.toLowerCase().includes(q) || a.assetId.toLowerCase().includes(q)));
+        }
+
+        async function selectAsset(asset, cardElement) {
+            selectedAsset = asset;
+            
+            // Clean selection focus boundaries
+            document.querySelectorAll('#assetGrid > div').forEach(card => {
+                card.classList.remove('border-blue-500', 'dark:border-blue-500', 'ring-2', 'ring-blue-500/20');
+                card.classList.add('border-zinc-100', 'dark:border-zinc-800');
+            });
+            cardElement.classList.remove('border-zinc-100', 'dark:border-zinc-800');
+            cardElement.classList.add('border-blue-500', 'dark:border-blue-500', 'ring-2', 'ring-blue-500/20');
+
+            // Toggle panels visible layout viewports
+            document.getElementById('emptyPreview').classList.add('hidden');
+            document.getElementById('previewPanel').classList.remove('hidden');
+
+            const img = document.getElementById('previewImage');
+            const fallback = document.getElementById('previewFallback');
+            const invertControlBox = document.getElementById('invertControlBox');
+
+            // Reset look settings per selection
+            disableInversion();
+
+            if (asset.isImage) {
+                img.src = asset.rawUrl;
+                img.classList.remove('hidden');
+                fallback.classList.add('hidden');
+                invertControlBox.classList.remove('hidden'); // Show inversion toolkit for images
+            } else {
+                img.classList.add('hidden');
+                fallback.classList.remove('hidden');
+                document.getElementById('fallbackExt').innerText = asset.ext;
+                invertControlBox.classList.add('hidden'); // Hide inversion toolkit for non-images
+            }
+
+            document.getElementById('metaName').innerText = asset.name;
+            document.getElementById('metaType').innerText = asset.ext || 'RAW';
+            
+            // Wire Download Pipeline Action
+            document.getElementById('downloadBtn').onclick = () => {
+                const trigger = document.createElement('a');
+                trigger.href = asset.rawUrl;
+                trigger.download = asset.name;
+                document.body.appendChild(trigger);
+                trigger.click();
+                document.body.removeChild(trigger);
+            };
+
+            // Fetch precision update timestamps
+            const dateDisplay = document.getElementById('metaUpdated');
+            dateDisplay.innerText = 'Syncing...';
+            try {
+                const dateRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/commits?path=${asset.path}&per_page=1`);
+                const commits = await dateRes.json();
+                if(commits && commits[0]) {
+                    dateDisplay.innerText = new Date(commits[0].commit.committer.date).toLocaleDateString(undefined, {
+                        year: 'numeric', month: 'short', day: 'numeric'
+                    });
+                } else {
+                    dateDisplay.innerText = 'N/A';
+                }
+            } catch(ex) {
+                dateDisplay.innerText = 'Unknown';
+            }
+        }
+
+        // Inversion Event Handler Actions
+        function handleInversionChange(e) {
+            const img = document.getElementById('previewImage');
+            const notice = document.getElementById('invertNotice');
+            if (e.target.checked) {
+                img.style.filter = 'invert(1)';
+                notice.classList.remove('hidden');
+            } else {
+                img.style.filter = 'none';
+                notice.classList.add('hidden');
+            }
+        }
+
+        function disableInversion() {
+            const toggle = document.getElementById('invertToggle');
+            toggle.checked = false;
+            const img = document.getElementById('previewImage');
+            if(img) img.style.filter = 'none';
+            const notice = document.getElementById('invertNotice');
+            if(notice) notice.classList.add('hidden');
+        }
+
+        // Copy Mechanism Clipboard Helpers
+        function copyData(type) {
+            if (!selectedAsset) return;
+            let targetText = type === 'id' ? selectedAsset.assetId : type === 'link' ? selectedAsset.pageLink : selectedAsset.rawUrl;
+            
+            navigator.clipboard.writeText(targetText).then(() => {
+                const btnId = `btn${type.charAt(0).toUpperCase() + type.slice(1)}Text`;
+                const el = document.getElementById(btnId);
+                const originalText = el.innerText;
+                el.innerText = 'Saved!';
+                el.classList.add('text-green-500');
+                setTimeout(() => {
+                    el.innerText = originalText;
+                    el.classList.remove('text-green-500');
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
