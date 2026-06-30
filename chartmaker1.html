@@ -44,78 +44,43 @@ body{background:var(--bg);color:var(--text);}
 .cm-title{font-size:15px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:7px;}
 .cm-title .material-symbols-rounded{font-size:19px;color:var(--accent);animation:spinIn .5s cubic-bezier(.22,.68,0,1.2) both .1s;}
 
-/* ── Chat body (big screen) ── */
-.cm-chat-body{
-  flex:1;overflow-y:auto;overflow-x:hidden;padding:12px 14px;
-  display:flex;flex-direction:column;gap:10px;
+/* ── Progress bar ── */
+.cm-progress-track{height:3px;background:var(--bg3);border-radius:2px;flex-shrink:0;}
+.cm-progress-fill{height:100%;border-radius:2px;background:var(--accent);transition:width .3s ease;}
+
+/* ── Body (single question + options, used on ALL screen sizes) ── */
+.cm-body{
+  flex:1;display:flex;flex-direction:column;align-items:stretch;
+  padding:16px 16px 8px;gap:12px;overflow-y:auto;
+  animation:fadeSlideUp .28s ease both;
   scrollbar-width:thin;scrollbar-color:var(--border) transparent;
 }
-.cm-chat-body::-webkit-scrollbar{width:4px;}
-.cm-chat-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.cm-body::-webkit-scrollbar{width:4px;}
+.cm-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
 
-/* ── Wizard body (small screen) ── */
-.cm-wizard-body{
-  flex:1;display:flex;flex-direction:column;align-items:stretch;
-  padding:16px 14px 8px;gap:12px;overflow-y:auto;
-  animation:fadeSlideUp .28s ease both;
-}
-
-/* ── Messages (chat mode) ── */
-.cm-msg{
-  max-width:82%;padding:10px 13px;border-radius:16px;font-size:13px;
-  font-weight:500;line-height:1.5;word-break:break-word;
-  animation:fadeSlideUp .25s ease both;
-}
-.cm-msg.bot{background:var(--bg2);border:1px solid var(--border);color:var(--text);align-self:flex-start;border-bottom-left-radius:5px;}
-.cm-msg.user{background:var(--accent-bg);color:var(--accent);align-self:flex-end;border-bottom-right-radius:5px;border:1px solid transparent;}
-
-/* ── Chat input row (big screen) ── */
-.cm-chat-input{
-  flex-shrink:0;border-top:1px solid var(--border);padding:10px 14px;
-  display:flex;gap:8px;align-items:center;background:var(--bg);
-  animation:slideUp .3s cubic-bezier(.22,.68,0,1.2) both;
-}
-.cm-chat-inp{
-  flex:1;border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;
-  font-size:13px;font-family:inherit;font-weight:600;background:var(--bg);color:var(--text);outline:none;
-  transition:border-color .15s,box-shadow .15s;
-}
-.cm-chat-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
-select.cm-chat-inp{cursor:pointer;}
-.cm-send-btn{
-  width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;
-  background:var(--apply-bg);color:#fff;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:background .15s,transform .1s;font-family:'Material Symbols Rounded',sans-serif;
-  font-size:20px;
-}
-.cm-send-btn:hover{background:var(--apply-hover);}
-.cm-send-btn:active{transform:scale(.92);}
-.cm-send-btn:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed;}
-
-/* ── Wizard question label ── */
 .cm-wiz-label{
   font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
   color:var(--text3);margin-bottom:2px;
 }
-.cm-wiz-question{font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.4;}
+.cm-wiz-question{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.4;}
 
-/* ── Option grid (wizard / big screen buttons) ── */
-.cm-opt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;}
+/* ── Option grid ── */
+.cm-opt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .cm-opt-btn{
-  padding:11px 10px;border-radius:12px;border:2px solid var(--border);
-  background:var(--bg2);cursor:pointer;font-size:12px;font-weight:700;
-  font-family:inherit;color:var(--text);display:flex;align-items:center;gap:7px;
+  padding:13px 12px;border-radius:12px;border:2px solid var(--border);
+  background:var(--bg2);cursor:pointer;font-size:13px;font-weight:700;
+  font-family:inherit;color:var(--text);display:flex;align-items:center;gap:8px;
   transition:border-color .15s,background .15s,transform .12s cubic-bezier(.22,.68,0,1.4);
 }
 .cm-opt-btn:hover{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
 .cm-opt-btn:active{transform:scale(.96);}
 .cm-opt-btn.selected{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
-.cm-opt-btn .material-symbols-rounded{font-size:18px;}
+.cm-opt-btn .material-symbols-rounded{font-size:19px;}
 
-/* ── Number / text input (wizard) ── */
+/* ── Number / text input ── */
 .cm-wiz-inp{
-  width:100%;border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;
-  font-size:14px;font-family:inherit;font-weight:600;background:var(--bg);color:var(--text);
+  width:100%;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;
+  font-size:15px;font-family:inherit;font-weight:600;background:var(--bg);color:var(--text);
   outline:none;transition:border-color .15s,box-shadow .15s;
 }
 .cm-wiz-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
@@ -123,58 +88,53 @@ select.cm-chat-inp{cursor:pointer;}
 /* ── Color row ── */
 .cm-color-row{display:flex;align-items:center;gap:10px;}
 .cm-color-swatch{
-  width:44px;height:44px;border-radius:12px;border:2px solid var(--border);
+  width:46px;height:46px;border-radius:12px;border:2px solid var(--border);
   cursor:pointer;flex-shrink:0;transition:border-color .15s,transform .12s;overflow:hidden;position:relative;
 }
 .cm-color-swatch:hover{border-color:var(--accent);transform:scale(1.06);}
-.cm-color-swatch input[type=color]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .cm-color-from-labs{
-  flex:1;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);
-  background:var(--bg2);cursor:pointer;font-size:12px;font-weight:700;
-  font-family:inherit;color:var(--text2);display:flex;align-items:center;gap:6px;
-  transition:border-color .15s,background .15s;
+  flex:1;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg2);cursor:pointer;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;
+  font-family:inherit;color:var(--text2);display:flex;align-items:center;gap:7px;
+  transition:border-color .15s,background .15s;text-transform:uppercase;
 }
 .cm-color-from-labs:hover{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
-.cm-color-from-labs .material-symbols-rounded{font-size:16px;}
+.cm-color-from-labs .material-symbols-rounded{font-size:17px;}
 
-/* ── Pillar nav (wizard) ── */
-.cm-pillar-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;}
-.cm-pillar-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+/* ── Pillar dots ── */
+.cm-pillar-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;flex-wrap:wrap;}
 .cm-pillar-dot{
   width:7px;height:7px;border-radius:50%;background:var(--bg3);cursor:pointer;
   transition:background .2s,transform .2s;
 }
 .cm-pillar-dot.done{background:var(--accent);}
 .cm-pillar-dot.active{background:var(--accent);transform:scale(1.4);}
+
+/* ── Nav row ── */
+.cm-nav-row{display:flex;gap:8px;margin-top:auto;padding-top:8px;flex-shrink:0;}
 .cm-nav-btn{
-  padding:7px 14px;border-radius:9px;border:1.5px solid var(--border);
-  background:var(--bg2);cursor:pointer;font-size:12px;font-weight:700;
+  padding:10px 16px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg2);cursor:pointer;font-size:13px;font-weight:700;
   font-family:inherit;color:var(--text2);display:flex;align-items:center;gap:5px;
   transition:border-color .15s,background .15s;
 }
 .cm-nav-btn:hover{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
 .cm-nav-btn:disabled{opacity:.35;pointer-events:none;}
-.cm-nav-btn .material-symbols-rounded{font-size:16px;}
-
-/* ── Progress bar (wizard) ── */
-.cm-progress-track{height:3px;background:var(--bg3);border-radius:2px;flex-shrink:0;}
-.cm-progress-fill{height:100%;border-radius:2px;background:var(--accent);transition:width .3s ease;}
+.cm-nav-btn.cm-nav-next{
+  flex:1;justify-content:center;border-color:var(--accent);background:var(--accent-bg);color:var(--accent);
+}
+.cm-nav-btn .material-symbols-rounded{font-size:17px;}
 
 /* ── Chart preview ── */
 .cm-preview-wrap{
-  flex-shrink:0;padding:10px 14px;border-top:1px solid var(--border);
+  flex-shrink:0;padding:10px 16px;border-top:1px solid var(--border);
   display:flex;flex-direction:column;gap:8px;
 }
 .cm-preview-canvas-wrap{
   background:var(--bg2);border-radius:12px;border:1px solid var(--border);
   overflow:hidden;position:relative;min-height:180px;display:flex;align-items:center;justify-content:center;
 }
-.cm-preview-canvas-wrap canvas{max-width:100%;max-height:220px;}
-.cm-preview-empty{
-  color:var(--text3);font-size:12px;font-weight:600;
-  display:flex;flex-direction:column;align-items:center;gap:6px;padding:24px;
-}
-.cm-preview-empty .material-symbols-rounded{font-size:32px;}
+.cm-preview-canvas-wrap canvas{max-width:100%;max-height:240px;}
 
 /* ── Footer ── */
 .cm-footer{
@@ -213,28 +173,30 @@ select.cm-chat-inp{cursor:pointer;}
 .dark .cm-cc-popup{background:#09090b;box-shadow:0 8px 40px rgba(0,0,0,.7);}
 .cm-cc-frame{width:100%;flex:1;border:none;display:block;}
 
+/* ── Field label ── */
+.cm-field-label{
+  font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;
+  letter-spacing:.5px;margin:8px 0 3px;
+}
+
 /* ── Animations ── */
 @keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
 @keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes spinIn{from{opacity:0;transform:rotate(-90deg) scale(.5)}to{opacity:1;transform:rotate(0) scale(1)}}
-@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
 @keyframes ccOvIn{from{opacity:0}to{opacity:1}}
 @keyframes ccPopIn{from{opacity:0;transform:scale(.93) translateY(12px)}to{opacity:1;transform:none}}
-
-/* ── Responsive layout switch ── */
-/* <= 540px: wizard (stacked), > 540px: chat */
-.cm-chat-layout{display:none;flex:1;flex-direction:column;overflow:hidden;}
-.cm-wizard-layout{display:flex;flex:1;flex-direction:column;overflow:hidden;}
-
-@media(min-width:541px){
-  .cm-chat-layout{display:flex;}
-  .cm-wizard-layout{display:none;}
-  .cm-preview-wrap{display:none;}/* preview is inside chat on big screens */
+@keyframes shakeEl{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-6px)}
+  40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
 }
-@media(max-width:540px){
-  .cm-footer{padding:8px 12px 10px;}
-  .cm-btn{padding:9px 16px;}
+
+/* ── Wider screens get a bit more breathing room, same layout ── */
+@media(min-width:541px){
+  .cm-wrap{max-width:520px;margin:0 auto;}
 }
 </style>
 </head>
@@ -249,33 +211,15 @@ select.cm-chat-inp{cursor:pointer;}
     </div>
   </div>
 
-  <!-- ══════════ CHAT LAYOUT (≥541px) ══════════ -->
-  <div class="cm-chat-layout" id="chatLayout">
-    <div class="cm-chat-body" id="chatBody"></div>
+  <div class="cm-progress-track"><div class="cm-progress-fill" id="wizProgress" style="width:0%"></div></div>
 
-    <!-- Inline chart preview inside chat -->
-    <div class="cm-preview-wrap" id="chatPreviewWrap" style="display:none;">
-      <div class="cm-preview-canvas-wrap">
-        <canvas id="chatPreviewCanvas"></canvas>
-      </div>
-    </div>
+  <!-- Single wizard body, used on every screen size -->
+  <div class="cm-body" id="wizBody"></div>
 
-    <div class="cm-chat-input" id="chatInputRow">
-      <!-- dynamically populated -->
-    </div>
-  </div>
-
-  <!-- ══════════ WIZARD LAYOUT (≤540px) ══════════ -->
-  <div class="cm-wizard-layout" id="wizardLayout">
-    <div class="cm-progress-track"><div class="cm-progress-fill" id="wizProgress" style="width:0%"></div></div>
-    <div class="cm-wizard-body" id="wizBody">
-      <!-- dynamically populated -->
-    </div>
-    <!-- Chart preview (small screen) -->
-    <div class="cm-preview-wrap" id="wizPreviewWrap" style="display:none;">
-      <div class="cm-preview-canvas-wrap">
-        <canvas id="wizPreviewCanvas"></canvas>
-      </div>
+  <!-- Chart preview -->
+  <div class="cm-preview-wrap" id="previewWrap" style="display:none;">
+    <div class="cm-preview-canvas-wrap">
+      <canvas id="previewCanvas"></canvas>
     </div>
   </div>
 
@@ -309,17 +253,8 @@ let _chartTitle = '';
 let _numPillars = 0;
 let _pillars = []; // [{label, value, fillColor, outlineColor}]
 let _currentPillarIdx = 0;
-let _chartInstance = null;
-let _chartInstance2 = null;
-let _colorTarget = null; // {pillarIdx, field: 'fill'|'outline'}
+let _wizStep = 'chartType'; // chartType → numPillars → pillars → title → done
 
-/* ── Conversation state for chat mode ── */
-let _chatStep = 0;
-// steps: 'chartType','numPillars','pillars','title','done'
-let _chatPillarIdx = 0;
-let _chatPillarField = 'label'; // label → value → fill → outline
-
-/* ── Chart type meta ── */
 const CHART_TYPES = [
   {id:'bar',    label:'Bar',        icon:'bar_chart'},
   {id:'line',   label:'Line',       icon:'show_chart'},
@@ -340,11 +275,7 @@ const PALETTE = [
 (function init(){
   parseHash();
   if(_theme === 'dark') document.body.classList.add('dark');
-  const big = window.matchMedia('(min-width:541px)');
-  if(big.matches) initChat(); else initWizard();
-  big.addEventListener('change', e => {
-    if(e.matches) initChat(); else initWizard();
-  });
+  initWizard();
 })();
 
 function parseHash(){
@@ -359,211 +290,13 @@ function parseHash(){
 }
 
 /* ═══════════════════════════════════════════════════════
-   CHAT MODE (≥541px)
+   WIZARD — single chooser flow, used on all screen sizes
 ═══════════════════════════════════════════════════════ */
-function initChat(){
-  _chatStep = 0; _chatPillarIdx = 0; _chatPillarField = 'label';
-  _chartType = ''; _numPillars = 0; _pillars = []; _chartTitle = '';
-  const body = document.getElementById('chatBody');
-  body.innerHTML = '';
-  chatBot('What kind of chart would you like to make?');
-  renderChatInput();
-}
-
-function chatBot(text){
-  const d = document.createElement('div');
-  d.className = 'cm-msg bot';
-  d.textContent = text;
-  const body = document.getElementById('chatBody');
-  body.appendChild(d);
-  body.scrollTop = body.scrollHeight;
-}
-
-function chatUser(text){
-  const d = document.createElement('div');
-  d.className = 'cm-msg user';
-  d.textContent = text;
-  const body = document.getElementById('chatBody');
-  body.appendChild(d);
-  body.scrollTop = body.scrollHeight;
-}
-
-function renderChatInput(){
-  const row = document.getElementById('chatInputRow');
-  row.innerHTML = '';
-
-  if(_chatStep === 0){
-    // Chart type select
-    const sel = mkSelect(CHART_TYPES.map(t => ({value:t.id, label:t.label})), 'Chart type…');
-    sel.onchange = () => {
-      if(!sel.value) return;
-      chatUser(CHART_TYPES.find(t=>t.id===sel.value).label);
-      _chartType = sel.value;
-      _chatStep = 1;
-      chatBot('How many data points (pillars)?');
-      renderChatInput();
-    };
-    row.appendChild(sel);
-  } else if(_chatStep === 1){
-    // Num pillars
-    const inp = mkChatInp('number','e.g. 4');
-    inp.min = 1; inp.max = 20;
-    const btn = mkSendBtn(() => {
-      const n = parseInt(inp.value);
-      if(!n || n<1 || n>20){ inp.style.borderColor=var_('--danger'); setTimeout(()=>inp.style.borderColor='',800); return; }
-      chatUser(String(n));
-      _numPillars = n;
-      _pillars = Array.from({length:n}, (_,i) => ({
-        label:'',value:0,
-        fillColor:PALETTE[i%PALETTE.length],
-        outlineColor:PALETTE[i%PALETTE.length]
-      }));
-      _chatPillarIdx = 0; _chatPillarField = 'label';
-      _chatStep = 2;
-      chatBot(`Label for data point 1?`);
-      renderChatInput();
-    });
-    row.appendChild(inp); row.appendChild(btn);
-    inp.focus();
-    inp.onkeydown = e => e.key==='Enter' && btn.click();
-  } else if(_chatStep === 2){
-    // Pillar fields
-    const p = _pillars[_chatPillarIdx];
-    if(_chatPillarField === 'label'){
-      const inp = mkChatInp('text',`e.g. Category ${_chatPillarIdx+1}`);
-      const btn = mkSendBtn(() => {
-        const v = inp.value.trim() || `P${_chatPillarIdx+1}`;
-        chatUser(v); p.label = v;
-        _chatPillarField = 'value';
-        chatBot(`Value for "${v}"?`);
-        renderChatInput();
-      });
-      row.appendChild(inp); row.appendChild(btn);
-      inp.focus(); inp.onkeydown = e => e.key==='Enter' && btn.click();
-    } else if(_chatPillarField === 'value'){
-      const inp = mkChatInp('number','e.g. 42');
-      const btn = mkSendBtn(() => {
-        const v = parseFloat(inp.value)||0;
-        chatUser(String(v)); p.value = v;
-        _chatPillarField = 'fill';
-        chatBot(`Fill color for "${p.label}"? (tap the swatch)`);
-        renderChatInput();
-      });
-      row.appendChild(inp); row.appendChild(btn);
-      inp.focus(); inp.onkeydown = e => e.key==='Enter' && btn.click();
-    } else if(_chatPillarField === 'fill'){
-      renderColorInputRow(row, p.fillColor, (hex) => {
-        p.fillColor = hex;
-        chatUser('Fill: '+hex);
-        _chatPillarField = 'outline';
-        chatBot(`Outline color for "${p.label}"?`);
-        renderChatInput();
-        updatePreview();
-      }, 'fill');
-    } else if(_chatPillarField === 'outline'){
-      renderColorInputRow(row, p.outlineColor, (hex) => {
-        p.outlineColor = hex;
-        chatUser('Outline: '+hex);
-        // Move to next pillar or step
-        _chatPillarIdx++;
-        if(_chatPillarIdx < _numPillars){
-          _chatPillarField = 'label';
-          chatBot(`Label for data point ${_chatPillarIdx+1}?`);
-        } else {
-          _chatStep = 3;
-          chatBot('Chart title?');
-        }
-        renderChatInput();
-        updatePreview();
-      }, 'outline');
-    }
-  } else if(_chatStep === 3){
-    // Title
-    const inp = mkChatInp('text','e.g. My Sales Chart');
-    const btn = mkSendBtn(() => {
-      const v = inp.value.trim() || 'My Chart';
-      chatUser(v); _chartTitle = v;
-      _chatStep = 4;
-      chatBot('Chart ready! Preview below. Click Insert to add it to your document.');
-      renderChatInput();
-      updatePreview();
-      showChatPreview();
-      document.getElementById('applyBtn').disabled = false;
-    });
-    row.appendChild(inp); row.appendChild(btn);
-    inp.focus(); inp.onkeydown = e => e.key==='Enter' && btn.click();
-  } else if(_chatStep === 4){
-    // Done — show restart option
-    const btn = document.createElement('button');
-    btn.className = 'cm-opt-btn'; btn.style.flex='1'; btn.style.justifyContent='center';
-    btn.innerHTML = '<span class="material-symbols-rounded">restart_alt</span> Start over';
-    btn.onclick = () => initChat();
-    row.appendChild(btn);
-  }
-}
-
-function showChatPreview(){
-  document.getElementById('chatPreviewWrap').style.display = '';
-  renderChartOn(document.getElementById('chatPreviewCanvas'));
-}
-
-function renderColorInputRow(row, currentHex, onDone, field){
-  // Swatch + native color + ColorLabs btn
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'display:flex;align-items:center;gap:8px;flex:1;';
-
-  const swatch = document.createElement('div');
-  swatch.className = 'cm-color-swatch';
-  swatch.style.background = currentHex;
-  const native = document.createElement('input');
-  native.type = 'color'; native.value = currentHex;
-  native.oninput = () => { swatch.style.background = native.value; };
-  swatch.appendChild(native);
-
-  const labsBtn = document.createElement('button');
-  labsBtn.className = 'cm-color-from-labs';
-  labsBtn.innerHTML = '<span class="material-symbols-rounded">palette</span> Color Labs';
-  labsBtn.onclick = () => openColorChooser(currentHex, (hex) => {
-    native.value = hex; swatch.style.background = hex;
-  });
-
-  const okBtn = mkSendBtn(() => onDone(native.value));
-
-  wrap.appendChild(swatch); wrap.appendChild(labsBtn);
-  row.appendChild(wrap); row.appendChild(okBtn);
-}
-
-function mkChatInp(type, placeholder){
-  const el = document.createElement('input');
-  el.type = type; el.placeholder = placeholder;
-  el.className = 'cm-chat-inp'; el.style.flex = '1';
-  return el;
-}
-
-function mkSelect(options, placeholder){
-  const sel = document.createElement('select');
-  sel.className = 'cm-chat-inp'; sel.style.flex = '1';
-  sel.innerHTML = `<option value="">${placeholder}</option>` +
-    options.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
-  return sel;
-}
-
-function mkSendBtn(onclick){
-  const btn = document.createElement('button');
-  btn.className = 'cm-send-btn';
-  btn.textContent = 'send';
-  btn.onclick = onclick;
-  return btn;
-}
-
-/* ═══════════════════════════════════════════════════════
-   WIZARD MODE (≤540px)
-═══════════════════════════════════════════════════════ */
-let _wizStep = 'chartType'; // chartType → numPillars → pillars → title → done
-
 function initWizard(){
   _wizStep = 'chartType'; _currentPillarIdx = 0;
   _chartType = ''; _numPillars = 0; _pillars = []; _chartTitle = '';
+  document.getElementById('applyBtn').disabled = true;
+  document.getElementById('previewWrap').style.display = 'none';
   renderWizard();
 }
 
@@ -613,27 +346,22 @@ function renderWizard(){
     addWizLabel(body,`Data Point ${_currentPillarIdx+1} of ${_numPillars}`);
     addWizQuestion(body,`Configure point ${_currentPillarIdx+1}`);
 
-    // Label
     addFieldLabel(body,'Label');
     const lInp = mkWizInp('text',`e.g. Category ${_currentPillarIdx+1}`);
     if(p.label) lInp.value = p.label;
     body.appendChild(lInp);
 
-    // Value
     addFieldLabel(body,'Value');
     const vInp = mkWizInp('number','e.g. 42');
     if(p.value) vInp.value = p.value;
     body.appendChild(vInp);
 
-    // Fill color
     addFieldLabel(body,'Fill color');
     body.appendChild(mkWizColorRow(p,'fill'));
 
-    // Outline color
     addFieldLabel(body,'Outline color');
     body.appendChild(mkWizColorRow(p,'outline'));
 
-    // Dot nav
     addPillarDots(body);
 
     addWizNav(body,
@@ -647,7 +375,6 @@ function renderWizard(){
         saveWizPillar(lInp,vInp,p);
         if(_currentPillarIdx < _numPillars-1){ _currentPillarIdx++; renderWizard(); }
         else { _wizStep = 'title'; renderWizard(); }
-        updatePreview();
       },
       _currentPillarIdx < _numPillars-1 ? 'Next point' : 'Next'
     );
@@ -662,7 +389,6 @@ function renderWizard(){
       () => {
         _chartTitle = inp.value.trim() || 'My Chart';
         _wizStep = 'done'; renderWizard();
-        updatePreview();
         document.getElementById('applyBtn').disabled = false;
       }
     );
@@ -670,15 +396,19 @@ function renderWizard(){
   } else if(_wizStep === 'done'){
     addWizLabel(body,'Done!');
     addWizQuestion(body,'Chart preview below. Tap Insert to add it.');
-    // Show preview
-    document.getElementById('wizPreviewWrap').style.display = '';
-    renderChartOn(document.getElementById('wizPreviewCanvas'));
-    // Start over button
+    document.getElementById('previewWrap').style.display = '';
+    renderChartOn(document.getElementById('previewCanvas'));
     const btn = document.createElement('button');
     btn.className = 'cm-opt-btn'; btn.style.justifyContent='center';
     btn.innerHTML = '<span class="material-symbols-rounded">restart_alt</span> Start over';
-    btn.onclick = () => { document.getElementById('applyBtn').disabled=true; document.getElementById('wizPreviewWrap').style.display='none'; initWizard(); };
+    btn.onclick = () => initWizard();
     body.appendChild(btn);
+    addWizNav(body,
+      () => { _wizStep = 'title'; renderWizard(); },
+      null,
+      null,
+      true /* hideNext */
+    );
   }
 }
 
@@ -699,7 +429,7 @@ function addWizQuestion(parent,text){
 }
 function addFieldLabel(parent,text){
   const el = document.createElement('div');
-  el.style.cssText = 'font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin:8px 0 3px;';
+  el.className = 'cm-field-label';
   el.textContent = text;
   parent.appendChild(el);
 }
@@ -718,23 +448,20 @@ function mkWizColorRow(p,field){
   const swatch = document.createElement('div');
   swatch.className = 'cm-color-swatch';
   swatch.style.background = current;
-  const native = document.createElement('input');
-  native.type='color'; native.value=current;
-  native.oninput = () => {
-    swatch.style.background = native.value;
-    if(field==='fill') p.fillColor = native.value;
-    else p.outlineColor = native.value;
-  };
-  swatch.appendChild(native);
 
   const labsBtn = document.createElement('button');
   labsBtn.className = 'cm-color-from-labs';
-  labsBtn.innerHTML = '<span class="material-symbols-rounded">palette</span> Color Labs';
-  labsBtn.onclick = () => openColorChooser(native.value, (hex) => {
-    native.value = hex; swatch.style.background = hex;
+  labsBtn.innerHTML = `<span class="material-symbols-rounded">palette</span> ${current}`;
+
+  const openPicker = () => openColorChooser((field==='fill'?p.fillColor:p.outlineColor), (hex) => {
+    swatch.style.background = hex;
+    labsBtn.innerHTML = `<span class="material-symbols-rounded">palette</span> ${hex}`;
     if(field==='fill') p.fillColor = hex;
     else p.outlineColor = hex;
   });
+
+  swatch.onclick = openPicker;
+  labsBtn.onclick = openPicker;
 
   row.appendChild(swatch); row.appendChild(labsBtn);
   return row;
@@ -742,7 +469,7 @@ function mkWizColorRow(p,field){
 
 function addPillarDots(parent){
   const wrap = document.createElement('div');
-  wrap.style.cssText = 'display:flex;justify-content:center;gap:6px;padding:8px 0;';
+  wrap.className = 'cm-pillar-dots';
   _pillars.forEach((_,i) => {
     const dot = document.createElement('div');
     dot.className = 'cm-pillar-dot' + (i===_currentPillarIdx?' active':(_pillars[i].label?' done':''));
@@ -752,23 +479,24 @@ function addPillarDots(parent){
   parent.appendChild(wrap);
 }
 
-function addWizNav(parent, onBack, onNext, nextLabel='Next'){
+function addWizNav(parent, onBack, onNext, nextLabel, hideNext){
   const row = document.createElement('div');
-  row.style.cssText = 'display:flex;gap:8px;margin-top:auto;padding-top:8px;';
+  row.className = 'cm-nav-row';
 
   const back = document.createElement('button');
   back.className = 'cm-nav-btn';
   back.innerHTML = '<span class="material-symbols-rounded">arrow_back</span> Back';
   back.onclick = onBack;
+  row.appendChild(back);
 
-  const next = document.createElement('button');
-  next.className = 'cm-nav-btn';
-  next.style.flex='1'; next.style.justifyContent='center';
-  next.style.borderColor='var(--accent)'; next.style.background='var(--accent-bg)'; next.style.color='var(--accent)';
-  next.innerHTML = `${nextLabel} <span class="material-symbols-rounded">arrow_forward</span>`;
-  next.onclick = onNext;
+  if(!hideNext){
+    const next = document.createElement('button');
+    next.className = 'cm-nav-btn cm-nav-next';
+    next.innerHTML = `${nextLabel||'Next'} <span class="material-symbols-rounded">arrow_forward</span>`;
+    next.onclick = onNext;
+    row.appendChild(next);
+  }
 
-  row.appendChild(back); row.appendChild(next);
   parent.appendChild(row);
 }
 
@@ -779,21 +507,10 @@ function updateWizProgress(){
 }
 
 /* ═══════════════════════════════════════════════════════
-   CHART RENDERING
+   CHART RENDERING (preview)
 ═══════════════════════════════════════════════════════ */
-function updatePreview(){
-  // Update whichever canvas is visible
-  const big = window.matchMedia('(min-width:541px)').matches;
-  if(big && document.getElementById('chatPreviewWrap').style.display !== 'none'){
-    renderChartOn(document.getElementById('chatPreviewCanvas'));
-  } else if(!big && document.getElementById('wizPreviewWrap').style.display !== 'none'){
-    renderChartOn(document.getElementById('wizPreviewCanvas'));
-  }
-}
-
 function renderChartOn(canvas){
   if(!_pillars.length || !_chartType) return;
-  // Destroy existing
   const existing = Chart.getChart(canvas);
   if(existing) existing.destroy();
 
@@ -929,8 +646,6 @@ async function doApply(){
 /* ═══════════════════════════════════════════════════════
    HELPERS
 ═══════════════════════════════════════════════════════ */
-function var_(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-
 function shake(el){
   el.style.borderColor = 'var(--danger)';
   el.style.animation = 'shakeEl .35s ease';
@@ -941,14 +656,5 @@ document.addEventListener('keydown', e => {
   if(e.key==='Escape' && document.getElementById('ccOverlay').classList.contains('open')) closeCc();
 });
 </script>
-<style>
-@keyframes shakeEl{
-  0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-6px)}
-  40%{transform:translateX(6px)}
-  60%{transform:translateX(-4px)}
-  80%{transform:translateX(4px)}
-}
-</style>
 </body>
 </html>
